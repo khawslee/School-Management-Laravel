@@ -13,11 +13,16 @@ class ClassModel extends Model
 
     static public function getRecords()
     {
-        $return = ClassModel::select('class.*', 'users.name as create_by_name')
-                    ->join('users', 'users.id', '=', 'class.create_by')
+        $return = ClassModel::select('class.*', 'users.name as created_by_name')
+                    ->join('users', 'users.id', '=', 'class.created_by')
                     ->orderBy('class.id', 'desc')
                     ->paginate(10);
 
         return $return;
+    }
+
+    static public function getSingle($id)
+    {
+        return self::find($id);
     }
 }
