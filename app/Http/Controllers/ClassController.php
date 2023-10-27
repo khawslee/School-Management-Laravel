@@ -26,10 +26,31 @@ class ClassController extends Controller
         $user= new ClassModel();
         $user->name = trim($request->name);
         $user->status = trim($request->status);
-        $user->create_by = Auth::user()->id;
+        $user->created_by = Auth::user()->id;
         $user->save();
 
         return redirect('admin/class/list')->with('success', 'Class added successfully.');
+    }
+
+    public function edit($id)
+    {
+        $data['getRecords'] = ClassModel::getSingle($id);
+        if(!empty($data['getRecords'])) {
+            $data['header_title'] = 'Edit Class';
+            return view('admin.class.edit', $data);
+        }
+        else{
+            abort(404);
+        }
+    }
+
+    public function delete($id)
+    {
+        $user = ClassModel::getSingle($id);
+        $user->is_deleted = 1;
+        $user->save();
+
+        return redirect('admin/class/list')->with('success', 'Class deleted successfully.');
     }
 
 }
