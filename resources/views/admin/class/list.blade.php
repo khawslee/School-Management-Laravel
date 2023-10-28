@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Class List (Total : {{ $getRecords->total() }})</h1>
+                        <h1>Class List</h1>
                     </div>
                     <div class="col-sm-6" style="text-align: right;">
                         <a href="{{ url('admin/class/add') }}" class="btn btn-primary">Add New Class</a>
@@ -34,19 +34,19 @@
                                     <div class="row">
                                         <div class="form-group col-md-3">
                                             <label for="">Name</label>
-                                            <input type="text" name="name" class="form-control" value="{{ Request::get('name')}}" placeholder="Enter name">
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="">Email</label>
-                                            <input type="text" name="email" class="form-control" value="{{ Request::get('email')}}" placeholder="Enter email"}}">
+                                            <input type="text" name="name" class="form-control"
+                                                value="{{ Request::get('name') }}" placeholder="Enter name">
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label for="">Date</label>
-                                            <input type="date" name="date" class="form-control" value="{{ Request::get('date')}}" placeholder="Enter date"}}">
+                                            <input type="date" name="date" class="form-control"
+                                                value="{{ Request::get('date') }}" placeholder="Enter date"}}">
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <button type="submit" class="btn btn-primary" style="margin-top: 30px;">Search</button>
-                                            <a href="{{ url('admin/admin/list') }}" class="btn btn-success" style="margin-top: 30px;">Clear</a>
+                                            <button type="submit" class="btn btn-primary"
+                                                style="margin-top: 30px;">Search</button>
+                                            <a href="{{ url('admin/class/list') }}" class="btn btn-success"
+                                                style="margin-top: 30px;">Clear</a>
                                         </div>
                                     </div>
                                 </div>
@@ -58,7 +58,7 @@
                         @include('_message')
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Admin list</h3>
+                                <h3 class="card-title">Class list</h3>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body p-0">
@@ -67,7 +67,8 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
-                                            <th>Email</th>
+                                            <th>Status</th>
+                                            <th>Create By</th>
                                             <th>Create Date</th>
                                             <th>Action</th>
                                         </tr>
@@ -77,12 +78,19 @@
                                             <tr>
                                                 <td>{{ $record->id }}</td>
                                                 <td>{{ $record->name }}</td>
-                                                <td>{{ $record->email }}</td>
+                                                <td>
+                                                    @if ($record->status == 1)
+                                                        Active
+                                                    @else
+                                                        Inactive
+                                                    @endif
+                                                </td>
+                                                <td>{{ $record->created_by_name }}</td>
                                                 <td>{{ $record->created_at }}</td>
                                                 <td>
-                                                    <a href="{{ url('admin/admin/edit/' . $record->id) }}"
+                                                    <a href="{{ url('admin/class/edit/' . $record->id) }}"
                                                         class="btn btn-primary">Edit</a>
-                                                    <a href="{{ url('admin/admin/delete/' . $record->id) }}"
+                                                    <a href="{{ url('admin/class/delete/' . $record->id) }}"
                                                         class="btn btn-danger">Delete</a>
                                                 </td>
                                             </tr>
