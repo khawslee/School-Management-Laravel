@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ClassModel;
+use Illuminate\Database\ClassMorphViolationException;
 
 class ClassController extends Controller
 {
@@ -51,6 +52,17 @@ class ClassController extends Controller
         $user->save();
 
         return redirect('admin/class/list')->with('success', 'Class deleted successfully.');
+    }
+
+    public function update($id, Request $request)
+    {
+        $class = ClassModel::getSingle($id);
+        $class->name = trim($request->name);
+        $class->status = $request->status;
+
+        $class->save();
+
+        return redirect('admin/class/list')->with('success', 'Class update successfully.');
     }
 
 }
