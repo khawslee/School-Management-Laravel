@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Edit Subject</h1>
+                        <h1>Edit Assign Subject</h1>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
@@ -27,24 +27,41 @@
                                 <!-- form start -->
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label>Subject Name</label>
-                                        <input type="text" class="form-control" required name="name"
-                                            placeholder="Enter class name" value="{{ old('name', $getRecords->name) }}">
+                                        <label>Class Name</label>
+                                        <select class="form-control" name="class_id" required>
+                                            <option value="">Select Class</option>
+                                            @foreach ($getClass as $class)
+                                                <option {{ $getRecord->class_id == $class->id ? 'selected' : '' }} value="{{ $class->id }}">{{ $class->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Subject type</label>
-                                        <select class="form-control" name="type">
-                                            <option {{ ($getRecords->type == 'Theory') ? 'selected' : '' }} value="Theory">Theory</option>
-                                            <option {{ ($getRecords->type == 'Practical') ? 'selected' : '' }} value="Practical">Practical</option>
-                                        </select>
+                                        <label>Subject Name</label>
+                                        @foreach ($getSubject as $subject)
+                                            @php
+                                                $checked = '';
+                                            @endphp
+                                            @foreach($getAssignSubjectID as $subjectAssign)
+                                                @if($subject->id == $subjectAssign->subject_id)
+                                                    @php
+                                                        $checked = 'checked';
+                                                    @endphp
+                                                @endif
+                                            @endforeach
+                                        <div>
+                                            <label style="font-weight: normal;">
+                                            <input {{ $checked }} type="checkbox" value="{{ $subject->id }}" name="subject_id[]"> {{ $subject->name }}
+                                            </label>
+                                        </div>
+                                        @endforeach
                                     </div>
 
                                     <div class="form-group">
                                         <label>Status</label>
                                         <select class="form-control" name="status">
-                                            <option {{ ($getRecords->status == 1) ? 'selected' : '' }} value="1">Active</option>
-                                            <option {{ ($getRecords->status == 0) ? 'selected' : '' }} value="0">Inactive</option>
+                                            <option {{ ($getRecord->status == 1) ? 'selected' : '' }} value="1">Active</option>
+                                            <option {{ ($getRecord->status == 0) ? 'selected' : '' }} value="0">Inactive</option>
                                         </select>
                                     </div>
                                 </div>
