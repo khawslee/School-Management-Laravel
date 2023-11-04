@@ -33,9 +33,14 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="form-group col-md-3">
-                                            <label for="">Name</label>
-                                            <input type="text" name="name" class="form-control"
-                                                value="{{ Request::get('name') }}" placeholder="Enter name">
+                                            <label for="">Class Name</label>
+                                            <input type="text" name="class_name" class="form-control"
+                                                value="{{ Request::get('class_name') }}" placeholder="Enter class name">
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label for="">Subject Name</label>
+                                            <input type="text" name="subject_name" class="form-control"
+                                                value="{{ Request::get('subject_name') }}" placeholder="Enter subject name">
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label for="">Date</label>
@@ -45,7 +50,7 @@
                                         <div class="form-group col-md-3">
                                             <button type="submit" class="btn btn-primary"
                                                 style="margin-top: 30px;">Search</button>
-                                            <a href="{{ url('admin/class/list') }}" class="btn btn-success"
+                                            <a href="{{ url('admin/assign_subject/list') }}" class="btn btn-success"
                                                 style="margin-top: 30px;">Clear</a>
                                         </div>
                                     </div>
@@ -58,7 +63,7 @@
                         @include('_message')
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Subject list</h3>
+                                <h3 class="card-title">Class Subject list</h3>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body p-0">
@@ -66,8 +71,8 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Name</th>
-                                            <th>Type</th>
+                                            <th>Class</th>
+                                            <th>Subject</th>
                                             <th>Status</th>
                                             <th>Create By</th>
                                             <th>Create Date</th>
@@ -75,11 +80,11 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{-- @foreach ($getRecords as $record)
+                                        @foreach ($getRecords as $record)
                                             <tr>
                                                 <td>{{ $record->id }}</td>
-                                                <td>{{ $record->name }}</td>
-                                                <td>{{ $record->type }}</td>
+                                                <td>{{ $record->class_name }}</td>
+                                                <td>{{ $record->subject_name }}</td>
                                                 <td>
                                                     @if ($record->status == 1)
                                                         Active
@@ -90,17 +95,17 @@
                                                 <td>{{ $record->created_by_name }}</td>
                                                 <td>{{ $record->created_at }}</td>
                                                 <td>
-                                                    <a href="{{ url('admin/subject/edit/' . $record->id) }}"
+                                                    <a href="{{ url('admin/assign_subject/edit/' . $record->id) }}"
                                                         class="btn btn-primary">Edit</a>
-                                                    <a href="{{ url('admin/subject/delete/' . $record->id) }}"
+                                                    <a href="{{ url('admin/assign_subject/delete/' . $record->id) }}"
                                                         class="btn btn-danger">Delete</a>
                                                 </td>
                                             </tr>
-                                        @endforeach --}}
+                                        @endforeach
                                     </tbody>
                                 </table>
                                 <div style="padding: 10px; float: right;">
-                                    {{-- {!! $getRecords->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!} --}}
+                                    {!! $getRecords->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!}
 
                                 </div>
                                 <!-- /.card-body -->
