@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\ClassSubjectModel;
 use App\Models\ClassModel;
 use App\Models\SubjectModel;
-use PhpParser\Builder\Class_;
 
 class ClassSubjectController extends Controller
 {
@@ -28,19 +27,42 @@ class ClassSubjectController extends Controller
 
     public function insert(Request $request)
     {
-        $user= new ClassSubjectModel();
-        $user->name = trim($request->name);
-        $user->status = trim($request->status);
-        $user->created_by = Auth::user()->id;
-        $user->save();
+        if(!empty($request->subject_id))
+        {
+            foreach($request->subject_id as $subject_id)
+            {
+                $getAlreadyAssign = ClassSubjectModel::getAlreadyAssign($request->class_id, $subject_id);
+
+                if(!empty($getAlreadyAssign))
+                {
+                    $getAlreadyAssign->status = $request->status;
+                    $getAlreadyAssign->save();
+                }
+                else
+                {
+                    $class = new ClassSubjectModel();
+                    $class->class_id = $request->class_id;
+                    $class->subject_id = $subject_id;
+                    $class->status = $request->status;
+                    $class->created_by = Auth::user()->id;
+                    $class->save();
+                }
+            }
+
+        }
 
         return redirect('admin/assign_subject/list')->with('success', 'Assign successfully.');
     }
 
     public function edit($id)
     {
-        $data['getRecords'] = ClassSubjectModel::getSingle($id);
-        if(!empty($data['getRecords'])) {
+        $getRecord = ClassSubjectModel::getSingle($id);
+        if(!empty($getRecord))
+        {
+            $data['getRecord'] = $getRecord;
+            $data['getAssignSubjectID'] = ClassSubjectModel::getAssignSubjectID($getRecord->class_id);
+            $data['getClass'] = ClassModel::getClass();
+            $data['getSubject'] = SubjectModel::getSubject();
             $data['header_title'] = 'Edit Subject';
             return view('admin.assign_subject.edit', $data);
         }
@@ -58,14 +80,32 @@ class ClassSubjectController extends Controller
         return redirect('admin/assign_subject/list')->with('success', 'Subject deleted successfully.');
     }
 
-    public function update($id, Request $request)
+    public function update(Request $request)
     {
-        $class = ClassSubjectModel::getSingle($id);
-        $class->name = trim($request->name);
-        $class->status = $request->status;
+        ClassSubjectModel::deleteSubject($request->class_id);
 
-        $class->save();
+        if(!empty($request->subject_id))
+        {
+            foreach($request->subject_id as $subject_id)
+            {
+                $getAlreadyAssign = ClassSubjectModel::getAlreadyAssign($request->class_id, $subject_id);
 
+                if(!empty($getAlreadyAssign))
+                {
+                    $getAlreadyAssign->status = $request->status;
+                    $getAlreadyAssign->save();
+                }
+                else
+                {
+                    $class = new ClassSubjectModel();
+                    $class->class_id = $request->class_id;
+                    $class->subject_id = $subject_id;
+                    $class->status = $request->status;
+                    $class->created_by = Auth::user()->id;
+                    $class->save();
+                }
+            }
+        }
         return redirect('admin/assign_subject/list')->with('success', 'Subject update successfully.');
     }
 }
