@@ -97,6 +97,8 @@
                                                 <td>
                                                     <a href="{{ url('admin/assign_subject/edit/' . $record->id) }}"
                                                         class="btn btn-primary">Edit</a>
+                                                    <a href="{{ url('admin/assign_subject/edit_single/' . $record->id) }}"
+                                                        class="btn btn-success">Single Edit</a>
                                                     <a href="{{ url('admin/assign_subject/delete/' . $record->id) }}"
                                                         class="btn btn-danger">Delete</a>
                                                 </td>
